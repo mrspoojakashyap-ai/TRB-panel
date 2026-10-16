@@ -1,1 +1,55 @@
-print("TRB PANEL LOADED!")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "TRBSongsEmotes"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local panel = Instance.new("Frame")
+panel.Size = UDim2.new(0, 270, 0, 300)
+panel.Position = UDim2.new(0.5, -135, 0.5, -150)
+panel.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+panel.Parent = gui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.Text = "TRB SONGS + EMOTES"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundColor3 = Color3.fromRGB(100, 40, 200)
+title.Parent = panel
+
+local songBox = Instance.new("TextBox")
+songBox.Size = UDim2.new(1, -20, 0, 40)
+songBox.Position = UDim2.new(0, 10, 0, 55)
+songBox.PlaceholderText = "Enter audio ID"
+songBox.Text = ""
+songBox.Parent = panel
+
+local function makeButton(text, y, callback)
+    local b = Instance.new("TextButton")
+    b.Size = UDim2.new(1, -20, 0, 40)
+    b.Position = UDim2.new(0, 10, 0, y)
+    b.Text = text
+    b.Parent = panel
+    b.Activated:Connect(callback)
+end
+
+makeButton("Show Song ID", 105, function()
+    title.Text = "Audio ID: " .. songBox.Text
+end)
+
+makeButton("Dance Emote", 155, function()
+    local character = player.Character
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        local animator = humanoid:FindFirstChildOfClass("Animator")
+        if animator then
+            title.Text = "Choose a permitted dance animation"
+        end
+    end
+end)
+
+makeButton("Close Panel", 205, function()
+    gui:Destroy()
+end)
